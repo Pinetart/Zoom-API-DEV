@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoom OAuth Example</title>
+</head>
+
+<body>
+    <button id="login">Login with Zoom</button>
+
+    <script>
+        const clientId = 'ZLVr8QxAQf6lcZXoRbaZA';
+        const clientSecret = '3WhE9MInnevG8tRwTumBRVbCZZ0zq8NS';
+        const redirectUri = 'http://localhost/callback';
+
+        document.getElementById('login').addEventListener('click', () => {
+            const authUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+            window.location.href = authUrl;
+        });
+
+        async function getAccessToken(code) {
+            const tokenUrl = 'https://zoom.us/oauth/token';
+
+            const response = await fetch(tokenUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `grant_type=authorization_code&code=${code}&redirect_uri=${encodeURIComponent(redirectUri)}`
+            });
+
+            const data = await response.json();
+            return data.access_token;
+        }
+
+        async function getUserInfo(accessToken) {
+            const response = await fetch('https://api.zoom.us/v2/users/me', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+
+            const data = await response.json();
+            console.log(data);
+        }
+
+        async function handleCallback() {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+
+            if (code) {
+                try {
+                    const accessToken = await getAccessToken(code);
+                    await getUserInfo(accessToken);
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        }
+
+        handleCallback();
+    </script>
+</body>
+
+</html>
