@@ -14,5 +14,8 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your system.
 
 1.  **Install Dependencies**
 
-    Clone the repository and navigate into the project directory. Then, install the necessary npm packages.
-    
+    npm install
+
+2.  **Run to test handshake**
+
+    node getToken.js
