@@ -23,11 +23,11 @@ async function fetchZoomToken() {
             }
         });
 
-        console.log("Success! API Response:");
+        console.log("✅ Success! API Response:");
         console.log(response.data);
 
     } catch (error) {
-        console.error("Error fetching Zoom token:");
+        console.error("❌ Error fetching Zoom token:");
         if (error.response) {
 
             console.error("Data:", error.response.data);
