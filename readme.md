@@ -12,10 +12,10 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your system.
 
 ### Installation & Execution
 
-1.  **Install Dependencies**
+ 1.  **Install Dependencies**
 
     npm install
 
 2.  **Run main.js**
 
-    node main.js
+    node main.js (Create meeting function active.)
