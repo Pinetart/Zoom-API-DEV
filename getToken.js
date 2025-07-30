@@ -1,44 +1,59 @@
-require('dotenv').config(); 
+require('dotenv').config();
 const axios = require('axios');
 
 const accountId = process.env.ZOOM_ACCOUNT_ID;
 const clientId = process.env.ZOOM_CLIENT_ID;
 const clientSecret = process.env.ZOOM_CLIENT_SECRET;
 
-const tokenUrl = "https://zoom.us/oauth/token";
+let cachedToken = null;
+let tokenExpiresAt = null;
 
-const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+/**
+ * @returns {Promise<string|null>}
+ */
 
-const params = new URLSearchParams();
-params.append("grant_type", "account_credentials");
-params.append("account_id", accountId);
-
-async function fetchZoomToken() {
-    console.log("Requesting Access Token from Zoom...");
+async function fetchNewToken() {
+    console.log("Requesting a new Access Token from Zoom...");
     try {
-        const response = await axios.post(tokenUrl, params, {
+        const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+
+        const response = await axios({
+            method: 'POST',
+            url: 'https://zoom.us/oauth/token',
+            params: {
+                grant_type: 'account_credentials',
+                account_id: accountId,
+            },
             headers: {
                 'Authorization': `Basic ${credentials}`,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         });
 
-        console.log("✅ Success! API Response:");
-        console.log(response.data);
+        const { access_token, expires_in } = response.data;
+
+        tokenExpiresAt = Date.now() + (expires_in - 60) * 1000;
+        cachedToken = access_token;
+
+        console.log("✅ New Access Token received and cached!");
+        return cachedToken;
 
     } catch (error) {
-        console.error("❌ Error fetching Zoom token:");
-        if (error.response) {
-
-            console.error("Data:", error.response.data);
-            console.error("Status:", error.response.status);
-            console.error("Headers:", error.response.headers);
-        } else if (error.request) {
-            console.error("Request:", error.request);
-        } else {
-            console.error('Error Message:', error.message);
-        }
+        console.error("❌ Error getting access token:", error.response ? error.response.data : error.message);
+        cachedToken = null;
+        tokenExpiresAt = null;
+        return null;
     }
 }
 
-fetchZoomToken();
+/**
+ * @returns {Promise<string|null>} 
+ */
+export async function getValidToken() {
+    if (cachedToken && Date.now() < tokenExpiresAt) {
+        console.log("Returning cached token.");
+        return cachedToken;
+    }
+
+    return await fetchNewToken();
+}

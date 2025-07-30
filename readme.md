@@ -1,6 +1,6 @@
 # Zoom POC Test
 
-A brief description of what this project does and who it's for.
+This application tests the ZOOM API 
 
 ## How to Run
 
@@ -16,6 +16,6 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your system.
 
     npm install
 
-2.  **Run to test handshake**
+2.  **Run main.js**
 
-    node getToken.js
+    node main.js
