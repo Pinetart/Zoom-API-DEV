@@ -1,5 +1,5 @@
-require('dotenv').config();
-const axios = require('axios');
+import 'dotenv/config';
+import axios from 'axios';
 
 const accountId = process.env.ZOOM_ACCOUNT_ID;
 const clientId = process.env.ZOOM_CLIENT_ID;

@@ -1,5 +1,5 @@
-import { listUsers } from './listUsers';
-import { getValidToken } from './getToken';
+import { listUsers } from './listUsers.js';
+import { getValidToken } from './getToken.js';
 
 async function main() {
     const token = await getValidToken();

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export async function listUsers(token) {
     console.log("\nFetching users with the access token...");
     try {
