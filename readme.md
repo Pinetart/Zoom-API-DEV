@@ -16,6 +16,10 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your system.
 
     npm install
 
-2.  **Run main.js**
+2.  **Run runAllCodeHere.js**
 
-    node main.js (Create meeting function active.)
+    node runAllCodeHere.js
+
+3.  **Uncomment functions to run those specific functions**
+
+    Be sure to uncomment the function you are trying to run. Also, be sure that the correct parameters are passed in respective functions.
