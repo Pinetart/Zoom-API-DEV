@@ -16,14 +16,14 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your system.
 
     npm install
 
-1.  **Request .env file from Developer**
+2.  **Request .env file from Developer**
 
     .env contains the zoom client ID, client secret & account ID. Another option is to create your own app on [Zoom Marketplace](https://marketplace.zoom.us/) and making your own .env.
 
-2.  **Run runAllCodeHere.js**
+3.  **Run runAllCodeHere.js**
 
     node runAllCodeHere.js
 
-3.  **Uncomment functions to run those specific functions**
+4.  **Uncomment functions to run those specific functions**
 
     Be sure to uncomment the function you are trying to run. Also, be sure that the correct parameters are passed in respective functions.
